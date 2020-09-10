@@ -33,13 +33,32 @@ try {
     <h2>Series</h2>
     <table style="width:50%">
     <tr>
-    <td>Titel</td>
-    <td>Rating</td>
+    <td><a href="?soort=serie&&serie=title">titel</a></td>
+    <td><a href="?soort=serie&&serie=rating">Rating<a></td>
 </tr>
+<?php
+$opdracht = 'SELECT title, rating, id FROM series';
+
+if(isset($_GET["soort"]))
+{ 
+    $action = $_GET["soort"];
+    $serie = $_GET["serie"];
+
+
+    if($action === "serie" && $serie === "title"){
+        $opdracht = 'SELECT title,rating,id FROM series  ORDER BY title'; 
+
+    } elseif($action === "serie" && $serie === "rating"){
+        $opdracht = 'SELECT title,rating,id FROM series  ORDER BY rating'; 
+
+    }
+
+}
+?>
     <?php 
     
     $file = 'import.sql';
-    $stmt = $dbh->query('SELECT title, rating, id FROM series');
+    $stmt = $dbh->query($opdracht);
     while ($row = $stmt->fetch()) {
         echo '<tr><td>' . $row['title'] . '</td><td>' . $row['rating'] . '<a href="series.php?id=' . $row['id'] . '" >Bekijk details</a></td></tr>'; 
     }
@@ -49,14 +68,36 @@ try {
     <h2>Films</h2>
     <table style="width:50%">
  <tr>
-  <td>Titel</td>
-  <td>Duur</td>
+  <td><a href="?soort=films&&film=titel">titel</a></td></td>
+  <td><a href="?soort=films&&film=duur">Duur<a></td>
+
+<?php
+$oefening = 'SELECT naam, duur_minuten, id FROM films';
+
+if(isset($_GET["soort"]))
+{ 
+    $action2 = $_GET["soort"];
+    $film = $_GET["film"];
+
+
+    if($action2 === "films" && $film === "titel"){
+        $oefening = 'SELECT naam, duur_minuten, id FROM films  ORDER BY naam'; 
+
+    } elseif($action2 === "films" && $film === "duur"){
+        $oefening = 'SELECT naam, duur_minuten, id FROM films  ORDER BY duur_minuten'; 
+
+    }
+
+}
+
+?>
+
 
 <?php 
     $file = 'import.sql';
-    $stmt = $dbh->query('SELECT naam, duur_minuten, id FROM films');
-while ($row = $stmt->fetch()) {
-        echo '<tr><td>' . $row['naam'] . '</td><td>' . $row['duur_minuten'] . '<a href="films.php?id=' . $row['id'] . '">Bekijk details</a></td></tr>';
+    $stmt2 = $dbh->query($oefening);
+while ($row2 = $stmt2->fetch()) {
+        echo '<tr><td>' . $row2['naam'] . '</td><td>' . $row2['duur_minuten'] . '<a href="films.php?id=' . $row2['id'] . '">Bekijk details</a></td></tr>';
 }
 ?>
 </table>
